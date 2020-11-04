@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"8.0.2","exturl":false,"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+
+  <meta name="description" content="123title: hexodate: 2020-11-04 21:43:22tags: hexo hexo 和 github搭建个人博客网站 安装所需环境(node git) 本地创建博客文件夹 远程创建博客仓库 将本地博客推送到远程1. 安装所需环境   node git安装Linux下载只需要执行如下命令即可12sudo apt-get updatesudo apt-get install">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sanguine&#39;s Blog">
+<meta property="og:url" content="http://example.com/2020/11/04/hexo/index.html">
+<meta property="og:site_name" content="Sanguine&#39;s Blog">
+<meta property="og:description" content="123title: hexodate: 2020-11-04 21:43:22tags: hexo hexo 和 github搭建个人博客网站 安装所需环境(node git) 本地创建博客文件夹 远程创建博客仓库 将本地博客推送到远程1. 安装所需环境   node git安装Linux下载只需要执行如下命令即可12sudo apt-get updatesudo apt-get install">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-11-04T13:59:06.688Z">
+<meta property="article:modified_time" content="2020-11-04T13:59:06.696Z">
+<meta property="article:author" content="赵文强">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2020/11/04/hexo/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title> | Sanguine's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Sanguine's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <section class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#hexo-%E5%92%8C-github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E7%BD%91%E7%AB%99"><span class="nav-number">1.</span> <span class="nav-text">hexo 和 github搭建个人博客网站</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%AE%89%E8%A3%85%E6%89%80%E9%9C%80%E7%8E%AF%E5%A2%83"><span class="nav-number">1.1.</span> <span class="nav-text">1. 安装所需环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%88%9B%E5%BB%BA%E6%9C%AC%E5%9C%B0%E5%8D%9A%E5%AE%A2%E6%96%87%E4%BB%B6"><span class="nav-number">1.2.</span> <span class="nav-text">2. 创建本地博客文件</span></a></li></ol></li></ol></div>
+        </section>
+        <!--/noindex-->
+
+        <section class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="赵文强"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">赵文强</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/curtain-r" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;curtain-r" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/zwq2428118613@163.com" title="E-Mail → zwq2428118613@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </section>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/04/hexo/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="赵文强">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sanguine's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-11-04 21:59:06" itemprop="dateCreated datePublished" datetime="2020-11-04T21:59:06+08:00">2020-11-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">title: hexo</span><br><span class="line">date: 2020-11-04 21:43:22</span><br><span class="line">tags: hexo</span><br></pre></td></tr></table></figure>
+<h1 id="hexo-和-github搭建个人博客网站"><a href="#hexo-和-github搭建个人博客网站" class="headerlink" title="hexo 和 github搭建个人博客网站"></a>hexo 和 github搭建个人博客网站</h1><ol>
+<li>安装所需环境(node git)</li>
+<li>本地创建博客文件夹</li>
+<li>远程创建博客仓库</li>
+<li>将本地博客推送到远程<h2 id="1-安装所需环境"><a href="#1-安装所需环境" class="headerlink" title="1. 安装所需环境"></a>1. 安装所需环境</h2></li>
+</ol>
+<ul>
+<li><code>node git</code>安装<br>Linux下载只需要执行如下命令即可<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install node git </span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>windows可以在<a target="_blank" rel="noopener" href='https://nodejs.org/en/'>node官网</a>,<a target="_blank" rel="noopener" href='https://git-scm.com/downloads'>git官网</a>下载安装</p>
+<ul>
+<li>验证安装是否成功<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git --version</span><br><span class="line"># 出现版本号</span><br><span class="line">node -v</span><br><span class="line"># 出现版本号</span><br><span class="line">npm -v</span><br><span class="line"># 出现版本号		npm是node的包管理器，安装node时会自动安装npm</span><br></pre></td></tr></table></figure>
+<h2 id="2-创建本地博客文件"><a href="#2-创建本地博客文件" class="headerlink" title="2. 创建本地博客文件"></a>2. 创建本地博客文件</h2></li>
+<li>npm安装cnpm或者改变npm源地址</li>
+</ul>
+<p>1.需求由来<br>由于node安装插件是从国外服务器下载，受网络影响大，速度慢且可能出现异常。所以如果npm的服务器在中国就好了，所以我们乐于分享的淘宝团队（阿里巴巴旗下业务阿里云）干了这事。来自官网：“这是一个完整 npmjs.org 镜像，你可以用此代替官方版本(只读)，同步频率目前为 10分钟 一次以保证尽量与官方服务同步。</p>
+<p>也就是说我们可以使用阿里布置在国内的服务器来进行node安装。</p>
+<p>2.使用方法<br>1.使用阿里定制的 cnpm 命令行工具代替默认的 npm，输入下面代码进行安装：</p>
+<p>$ npm install -g cnpm –registry=<a target="_blank" rel="noopener" href="https://registry.npm.taobao.org/">https://registry.npm.taobao.org</a><br>2.检测cnpm版本，如果安装成功可以看到cnpm的基本信息。</p>
+<p>cnpm -v<br>3.以后安装插件只需要使用cnpm intall即可</p>
+<p>假如我已经习惯了npm install的安装方式，我不想去下载阿里的cnpm命令工具将命令变成cnpm怎么办？很容易我们想到，我直接将node的仓库地址改成淘宝镜像的仓库地址不就好了吗？</p>
+<p>3.单次使用<br>npm install –registry=<a target="_blank" rel="noopener" href="https://registry.npm.taobao.org/">https://registry.npm.taobao.org</a><br>4.永久使用<br>设置成全局的下载镜像站点，这样每次install的时候就不用加–registry，默认会从淘宝镜像下载，设置方法如下：</p>
+<p>1.打开.npmrc文件（nodejs\node_modules\npm\npmrc，没有的话可以使用git命令行建一个( touch .npmrc)，用cmd命令建会报错）<br>2.增加 registry =<a target="_blank" rel="noopener" href="https://registry.npm.taobao.org/">https://registry.npm.taobao.org</a>  即可。<br>也可以按如下方式直接在命令行设置</p>
+<p>npm config set registry <a target="_blank" rel="noopener" href="https://registry.npm.taobao.org/">https://registry.npm.taobao.org</a><br>检测是否成功</p>
+<p>// 配置后可通过下面方式来验证是否成功<br>npm config get registry<br>// 或<br>npm info express<br>这样，我们可以使用淘宝镜像还不用更换成cnpm,是不是很爽！虽然实际都是使用的是淘宝镜像。<br>最后附上淘宝镜像官网地址：<a target="_blank" rel="noopener" href="http://npm.taobao.org/">http://npm.taobao.org/</a></p>
+<p>注：如果想还原npm仓库地址，只需再把地址配置成npm镜像就可以了</p>
+<p>   npm config set registry <a target="_blank" rel="noopener" href="https://registry.npmjs.org/">https://registry.npmjs.org/</a><br>5.npm改成淘宝镜像与cnpm区别（20190509新增）<br>之前一直以为npm改成淘宝镜像后和cnpm本质是一样的，今天在研究package-lock.json时候发现，这两者还是有很大区别。特记录下：</p>
+<p>先贴下截图对比：<br>1.使用cnpm安装lodash</p>
+<p>2.使用改成淘宝仓库的npm安装lodash</p>
+<p>npm.png<br>通过截图会发现：</p>
+<p>cnpm安装模块的时候会在node_modules文件夹生成二个文件夹，一个以下划线 _开头以及版本号组成的名字，一个正常名字的模块，文件夹名字虽然不一样，但里面文件是一样的。<br>比如执行cnpm install lodash,会在node_modules文件夹下生成两个文件夹：<a href="mailto:&#x5f;&#108;&#111;&#x64;&#97;&#115;&#x68;&#64;&#52;&#46;&#x31;&#55;&#x2e;&#49;&#x31;">&#x5f;&#108;&#111;&#x64;&#97;&#115;&#x68;&#64;&#52;&#46;&#x31;&#55;&#x2e;&#49;&#x31;</a>@lodash和lodash，</p>
+<p>先执行了cnpm install lodash，然后再执行npm install lodash，npm安装的lodash会替换掉cnpm安装的lodash包（包括以下划线开头那个包），文件夹会只剩一个npm先安装的lodash包。再次npm uninstall lodash或者cnpm uninstall lodash,都会删除lodash包，此时插件包就变成空文件夹了。</p>
+<p>先执行了cnpm install lodash，然后再执行npm uninstall lodash后，此时会报错</p>
+<p> npm ERR! code EINVALIDPACKAGENAME<br> npm ERR! Invalid package name “<a href="mailto:&#95;&#108;&#x6f;&#100;&#x61;&#x73;&#104;&#x40;&#52;&#46;&#49;&#55;&#x2e;&#x31;&#x31;">&#95;&#108;&#x6f;&#100;&#x61;&#x73;&#104;&#x40;&#52;&#46;&#49;&#55;&#x2e;&#x31;&#x31;</a>@lodash”: name cannot start with an underscore;<br> name can only contain URL-friendly characters<br>但是使用cnpm uninstall lodash后，不会报错，此时会删掉cnpm安装的两个包中其中一个即非下划线（正常名字）的包。剩余的那个包是可以正常通过鼠标点击打开的。然后在文件中require会报错，提示没有这个包。</p>
+<p>先执行了cnpm install lodash，然后手动删除cnpm安装的两个包中其中一个即下划线（非正常名字）的包，剩余的那个包，发现无法通过鼠标点击打开了。然后在文件中require会报错，提示没有这个包。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/11/04/JavaScript%E5%BF%85%E8%A6%81%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="prev" title="JavaScript必要知识点">
+                  <i class="fa fa-chevron-left"></i> JavaScript必要知识点
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">赵文强</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="//cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
