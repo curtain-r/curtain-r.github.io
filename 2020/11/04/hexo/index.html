@@ -20,13 +20,13 @@
 
 <script class="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"8.0.2","exturl":false,"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+    var CONFIG = {"hostname":"curtain-r.github.io","root":"/","scheme":"Pisces","version":"8.0.2","exturl":false,"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
   </script>
 
   <meta name="description" content="hexo 和 github搭建个人博客网站 安装所需环境(node git) 本地创建博客文件夹 远程创建博客仓库 将本地博客推送到远程  1. 安装所需环境 node git安装Linux下载只需要执行如下命令即可  12sudo apt-get updatesudo apt-get install node git   windows可以在node官网,git官网下载安装  验证安装是否成功">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Sanguine&#39;s Blog">
-<meta property="og:url" content="http://example.com/2020/11/04/hexo/index.html">
+<meta property="og:url" content="https://curtain-r.github.io/2020/11/04/hexo/index.html">
 <meta property="og:site_name" content="Sanguine&#39;s Blog">
 <meta property="og:description" content="hexo 和 github搭建个人博客网站 安装所需环境(node git) 本地创建博客文件夹 远程创建博客仓库 将本地博客推送到远程  1. 安装所需环境 node git安装Linux下载只需要执行如下命令即可  12sudo apt-get updatesudo apt-get install node git   windows可以在node官网,git官网下载安装  验证安装是否成功">
 <meta property="og:locale" content="zh_CN">
@@ -37,7 +37,7 @@
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://example.com/2020/11/04/hexo/">
+<link rel="canonical" href="https://curtain-r.github.io/2020/11/04/hexo/">
 
 
 <script class="page-configurations">
@@ -257,7 +257,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/04/hexo/">
+    <link itemprop="mainEntityOfPage" href="https://curtain-r.github.io/2020/11/04/hexo/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -325,7 +325,7 @@
 <p>这样，我们可以使用淘宝镜像还不用更换成cnpm,是不是很爽！虽然实际都是使用的是淘宝镜像。<br>最后附上淘宝镜像官网地址：<a target="_blank" rel="noopener" href="http://npm.taobao.org/">http://npm.taobao.org/</a></p>
 <p>注：如果想还原npm仓库地址，只需再把地址配置成npm镜像就可以了</p>
 <p>  <code>npm config set registry https://registry.npmjs.org/</code><br>5.npm改成淘宝镜像与cnpm区别</p>
-<p>cnpm安装模块的时候会在node_modules文件夹生成二个文件夹，一个以下划线 _开头以及版本号组成的名字，一个正常名字的模块，文件夹名字虽然不一样，但里面文件是一样的。<br>比如执行cnpm install lodash,会在node_modules文件夹下生成两个文件夹：<a href="mailto:&#95;&#108;&#x6f;&#x64;&#97;&#x73;&#104;&#x40;&#52;&#x2e;&#49;&#x37;&#46;&#x31;&#x31;">&#95;&#108;&#x6f;&#x64;&#97;&#x73;&#104;&#x40;&#52;&#x2e;&#49;&#x37;&#46;&#x31;&#x31;</a>@lodash和lodash，</p>
+<p>cnpm安装模块的时候会在node_modules文件夹生成二个文件夹，一个以下划线 _开头以及版本号组成的名字，一个正常名字的模块，文件夹名字虽然不一样，但里面文件是一样的。<br>比如执行cnpm install lodash,会在node_modules文件夹下生成两个文件夹：<a href="mailto:&#95;&#x6c;&#x6f;&#x64;&#x61;&#115;&#104;&#x40;&#x34;&#x2e;&#49;&#55;&#46;&#49;&#49;">&#95;&#x6c;&#x6f;&#x64;&#x61;&#115;&#104;&#x40;&#x34;&#x2e;&#49;&#55;&#46;&#49;&#49;</a>@lodash和lodash，</p>
 <p>先执行了cnpm install lodash，然后再执行npm install lodash，npm安装的lodash会替换掉cnpm安装的lodash包（包括以下划线开头那个包），文件夹会只剩一个npm先安装的lodash包。再次npm uninstall lodash或者cnpm uninstall lodash,都会删除lodash包，此时插件包就变成空文件夹了。</p>
 <p>先执行了<code>cnpm install lodash</code>，然后再执行<code>npm uninstall lodash</code>后，此时会报错</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm ERR! code EINVALIDPACKAGENAME</span><br><span class="line">npm ERR! Invalid package name &quot;_lodash@4.17.11@lodash&quot;: name cannot start with an underscore; </span><br><span class="line">name can only contain URL-friendly characters</span><br></pre></td></tr></table></figure>
