@@ -25,13 +25,13 @@
 
   <meta name="description" content="hexo 和 github搭建个人博客网站 安装所需环境(node git) 本地创建博客文件夹 远程创建博客仓库 将本地博客推送到远程  1. 安装所需环境 node git安装Linux下载只需要执行如下命令即可  12sudo apt-get updatesudo apt-get install node git   windows可以在node官网,git官网下载安装  验证安装是否成功">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Sanguine&#39;s Blog">
+<meta property="og:title" content="hexo">
 <meta property="og:url" content="https://curtain-r.github.io/2020/11/04/hexo/index.html">
 <meta property="og:site_name" content="Sanguine&#39;s Blog">
 <meta property="og:description" content="hexo 和 github搭建个人博客网站 安装所需环境(node git) 本地创建博客文件夹 远程创建博客仓库 将本地博客推送到远程  1. 安装所需环境 node git安装Linux下载只需要执行如下命令即可  12sudo apt-get updatesudo apt-get install node git   windows可以在node官网,git官网下载安装  验证安装是否成功">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-11-04T14:28:18.000Z">
-<meta property="article:modified_time" content="2020-11-04T14:43:50.453Z">
+<meta property="article:published_time" content="2020-11-04T14:57:17.000Z">
+<meta property="article:modified_time" content="2020-11-04T14:57:55.793Z">
 <meta property="article:author" content="赵文强">
 <meta property="article:tag" content="hexo">
 <meta name="twitter:card" content="summary">
@@ -50,7 +50,7 @@
   };
 </script>
 
-  <title> | Sanguine's Blog</title>
+  <title>hexo | Sanguine's Blog</title>
   
 
 
@@ -199,7 +199,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">4</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -208,7 +208,7 @@
         <span class="site-state-item-name">分类</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">标签</span>
       </div>
   </nav>
@@ -270,7 +270,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          
+          hexo
         </h1>
 
         <div class="post-meta-container">
@@ -282,7 +282,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2020-11-04 22:28:18 / 修改时间：22:43:50" itemprop="dateCreated datePublished" datetime="2020-11-04T22:28:18+08:00">2020-11-04</time>
+      <time title="创建时间：2020-11-04 22:57:17 / 修改时间：22:57:55" itemprop="dateCreated datePublished" datetime="2020-11-04T22:57:17+08:00">2020-11-04</time>
     </span>
 
   
@@ -325,7 +325,7 @@
 <p>这样，我们可以使用淘宝镜像还不用更换成cnpm,是不是很爽！虽然实际都是使用的是淘宝镜像。<br>最后附上淘宝镜像官网地址：<a target="_blank" rel="noopener" href="http://npm.taobao.org/">http://npm.taobao.org/</a></p>
 <p>注：如果想还原npm仓库地址，只需再把地址配置成npm镜像就可以了</p>
 <p>  <code>npm config set registry https://registry.npmjs.org/</code><br>5.npm改成淘宝镜像与cnpm区别</p>
-<p>cnpm安装模块的时候会在node_modules文件夹生成二个文件夹，一个以下划线 _开头以及版本号组成的名字，一个正常名字的模块，文件夹名字虽然不一样，但里面文件是一样的。<br>比如执行cnpm install lodash,会在node_modules文件夹下生成两个文件夹：<a href="mailto:&#95;&#x6c;&#x6f;&#x64;&#x61;&#115;&#104;&#x40;&#x34;&#x2e;&#49;&#55;&#46;&#49;&#49;">&#95;&#x6c;&#x6f;&#x64;&#x61;&#115;&#104;&#x40;&#x34;&#x2e;&#49;&#55;&#46;&#49;&#49;</a>@lodash和lodash，</p>
+<p>cnpm安装模块的时候会在node_modules文件夹生成二个文件夹，一个以下划线 _开头以及版本号组成的名字，一个正常名字的模块，文件夹名字虽然不一样，但里面文件是一样的。<br>比如执行cnpm install lodash,会在node_modules文件夹下生成两个文件夹：<a href="mailto:&#x5f;&#x6c;&#x6f;&#x64;&#x61;&#115;&#x68;&#x40;&#x34;&#x2e;&#x31;&#55;&#46;&#x31;&#49;">&#x5f;&#x6c;&#x6f;&#x64;&#x61;&#115;&#x68;&#x40;&#x34;&#x2e;&#x31;&#55;&#46;&#x31;&#49;</a>@lodash和lodash，</p>
 <p>先执行了cnpm install lodash，然后再执行npm install lodash，npm安装的lodash会替换掉cnpm安装的lodash包（包括以下划线开头那个包），文件夹会只剩一个npm先安装的lodash包。再次npm uninstall lodash或者cnpm uninstall lodash,都会删除lodash包，此时插件包就变成空文件夹了。</p>
 <p>先执行了<code>cnpm install lodash</code>，然后再执行<code>npm uninstall lodash</code>后，此时会报错</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm ERR! code EINVALIDPACKAGENAME</span><br><span class="line">npm ERR! Invalid package name &quot;_lodash@4.17.11@lodash&quot;: name cannot start with an underscore; </span><br><span class="line">name can only contain URL-friendly characters</span><br></pre></td></tr></table></figure>
@@ -336,8 +336,6 @@
 <h4 id="2-npm安装hexo-cli"><a href="#2-npm安装hexo-cli" class="headerlink" title="2. npm安装hexo-cli"></a>2. npm安装<code>hexo-cli</code></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-cli -g	</span><br></pre></td></tr></table></figure>
 
 <h4 id="3-用hexo-cli创建本地文件夹"><a href="#3-用hexo-cli创建本地文件夹" class="headerlink" title="3. 用hexo-cli创建本地文件夹"></a>3. 用<code>hexo-cli</code>创建本地文件夹</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo init </span><br></pre></td></tr></table></figure>
-
-
     </div>
 
     
@@ -358,6 +356,9 @@
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/2020/11/05/%E5%AE%9E%E4%B9%A0%E5%87%86%E5%A4%87%E7%AC%AC%E4%B8%80%E5%A4%A9/" rel="next" title="实习准备第一天">
+                  实习准备第一天 <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
     </footer>
