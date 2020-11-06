@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"curtain-r.github.io","root":"/","scheme":"Pisces","version":"8.0.2","exturl":false,"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+
+  <meta name="description" content="观察者模式和发布订阅 在这之前，我一直以为他们是相同的，先在我才知道他们的区别在哪了  观察者模式12345678910111213141516class User &amp;#123;    constructor(name) &amp;#123;        this.name &#x3D; name;        this.subscriberList &#x3D; [];  	&#x2F;&#x2F; 订阅者存在这里    &amp;#125;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="实习准备第二天">
+<meta property="og:url" content="https://curtain-r.github.io/2020/11/06/%E5%AE%9E%E4%B9%A0%E5%87%86%E5%A4%87%E7%AC%AC%E4%BA%8C%E5%A4%A9/index.html">
+<meta property="og:site_name" content="Sanguine&#39;s Blog">
+<meta property="og:description" content="观察者模式和发布订阅 在这之前，我一直以为他们是相同的，先在我才知道他们的区别在哪了  观察者模式12345678910111213141516class User &amp;#123;    constructor(name) &amp;#123;        this.name &#x3D; name;        this.subscriberList &#x3D; [];  	&#x2F;&#x2F; 订阅者存在这里    &amp;#125;">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-11-06T14:12:47.000Z">
+<meta property="article:modified_time" content="2020-11-06T15:33:43.110Z">
+<meta property="article:author" content="赵文强">
+<meta property="article:tag" content="实习准备">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://curtain-r.github.io/2020/11/06/%E5%AE%9E%E4%B9%A0%E5%87%86%E5%A4%87%E7%AC%AC%E4%BA%8C%E5%A4%A9/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>实习准备第二天 | Sanguine's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Sanguine's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <section class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F%E5%92%8C%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85"><span class="nav-number">1.</span> <span class="nav-text">观察者模式和发布订阅</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.0.1.</span> <span class="nav-text">观察者模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">1.0.2.</span> <span class="nav-text">观察者模式的优缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85"><span class="nav-number">1.1.</span> <span class="nav-text">发布订阅</span></a></li></ol></li></ol></div>
+        </section>
+        <!--/noindex-->
+
+        <section class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="赵文强"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">赵文强</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/curtain-r" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;curtain-r" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/zwq2428118613@163.com" title="E-Mail → zwq2428118613@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </section>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://curtain-r.github.io/2020/11/06/%E5%AE%9E%E4%B9%A0%E5%87%86%E5%A4%87%E7%AC%AC%E4%BA%8C%E5%A4%A9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="赵文强">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sanguine's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          实习准备第二天
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-11-06 22:12:47 / 修改时间：23:33:43" itemprop="dateCreated datePublished" datetime="2020-11-06T22:12:47+08:00">2020-11-06</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="观察者模式和发布订阅"><a href="#观察者模式和发布订阅" class="headerlink" title="观察者模式和发布订阅"></a>观察者模式和发布订阅</h1><blockquote>
+<p>在这之前，我一直以为他们是相同的，先在我才知道他们的区别在哪了</p>
+</blockquote>
+<h3 id="观察者模式"><a href="#观察者模式" class="headerlink" title="观察者模式"></a>观察者模式</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="title">constructor</span>(<span class="params">name</span>)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">        <span class="built_in">this</span>.subscriberList = [];  	<span class="comment">// 订阅者存在这里</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 我可以发布消息</span></span><br><span class="line">    <span class="function"><span class="title">publish</span>(<span class="params">reward</span>)</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;<span class="built_in">this</span>.name&#125;</span> 发布了一个 <span class="subst">$&#123;reward&#125;</span> 元的宝贝！`</span>);</span><br><span class="line">        <span class="built_in">this</span>.subscriberList.forEach(<span class="function"><span class="params">callback</span> =&gt;</span> callback(reward));	<span class="comment">// 逐个通知</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 我可以去订阅别人</span></span><br><span class="line">    <span class="function"><span class="title">subscribe</span>(<span class="params">subject, callback</span>)</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;<span class="built_in">this</span>.name&#125;</span> 订阅了 <span class="subst">$&#123;subject.name&#125;</span>!`</span>);</span><br><span class="line">        subject.subscriberList.push(callback);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">et wang = <span class="keyword">new</span> User(<span class="string">&#x27;wang&#x27;</span>);</span><br><span class="line"><span class="keyword">let</span> li = <span class="keyword">new</span> User(<span class="string">&#x27;li&#x27;</span>);</span><br><span class="line"><span class="keyword">let</span> zhang = <span class="keyword">new</span> User(<span class="string">&#x27;zhang&#x27;</span>);</span><br><span class="line"><span class="keyword">let</span> sun = <span class="keyword">new</span> User(<span class="string">&#x27;sun&#x27;</span>);</span><br><span class="line"></span><br><span class="line">li.subscribe(wang, <span class="function"><span class="params">rewards</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`li <span class="subst">$&#123;rewards &gt; <span class="number">100</span> ? <span class="string">&#x27;觉得太贵了，不&#x27;</span> : <span class="string">&quot;&quot;</span>&#125;</span>决定购买这件物品！`</span>);</span><br><span class="line">&#125;)</span><br><span class="line">zhang.subscribe(wang, <span class="function"><span class="params">rewards</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`zhang <span class="subst">$&#123;rewards &gt; <span class="number">50</span> ? <span class="string">&#x27;觉得太贵了，不&#x27;</span> : <span class="string">&quot;&quot;</span>&#125;</span>决定购买这件物品！`</span>);</span><br><span class="line">&#125;)</span><br><span class="line">sun.subscribe(wang, <span class="function"><span class="params">rewards</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`sun <span class="subst">$&#123;rewards &gt; <span class="number">25</span> ? <span class="string">&#x27;觉得太贵了，不&#x27;</span> : <span class="string">&quot;&quot;</span>&#125;</span>决定购买这件物品！`</span>);</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">wang.publish(<span class="number">75</span>);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 输出</span></span><br><span class="line">li 订阅了 wang!</span><br><span class="line">zhang 订阅了 wang!</span><br><span class="line">sun 订阅了 wang!</span><br><span class="line">wang 发布了一个 <span class="number">75</span> 元的宝贝！</span><br><span class="line">li 决定购买这件物品！</span><br><span class="line">zhang 觉得太贵了，不决定购买这件物品！</span><br><span class="line">sun 觉得太贵了，不决定购买这件物品！</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="观察者模式的优缺点"><a href="#观察者模式的优缺点" class="headerlink" title="观察者模式的优缺点"></a>观察者模式的优缺点</h3><ol>
+<li><p>具体主题和具体观察者是 <strong>松耦合</strong> 关系。由于主题接口仅仅依赖于观察者接口，因此具体主题只是知道它的观察者是实现观察者接口的某个类的实例，但不需要知道具体是哪个类。同样，由于观察者仅仅依赖于主题接口，因此具体观察者只是知道它依赖的主题是实现主题接口的某个类的实例，但不需要知道具体是哪个类。</p>
+</li>
+<li><p>观察者模式满足 <strong>“开-闭原则”</strong>。主题接口仅仅依赖于观察者接口，这样，就可以让创建具体主题的类也仅仅是依赖于观察者接口，因此，如果增加新的实现观察者接口的类，不必修改创建具体主题的类的代码。。同样，创建具体观察者的类仅仅依赖于主题接口，如果增加新的实现主题接口的类，也不必修改创建具体观察者类的代码。</p>
+</li>
+</ol>
+<ol>
+<li><p>如果一个被观察者对象有很多的直接和间接的观察者的话，将所有的观察者 <strong>都通知到会花费很多时间</strong>。</p>
+</li>
+<li><p>如果在观察者和观察目标之间有循环依赖的话，观察目标 <strong>会触发它们之间进行循环调用</strong>，可能导致系统崩溃。</p>
+</li>
+<li><p>观察者模式没有相应的机制让观察者知道所观察的目标对象是怎么发生变化的，而仅仅只是知道观察目标发生了变化。</p>
+</li>
+</ol>
+<h2 id="发布订阅"><a href="#发布订阅" class="headerlink" title="发布订阅"></a>发布订阅</h2><p><strong>我们需要一个中间者（Broker）来管理发布和订阅这些事情，发布者不需要知道消息具体发布给谁，订阅者不需要知道订阅的是谁</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Broker</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="title">constructor</span>(<span class="params">name</span>)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">        <span class="built_in">this</span>.topicsList = [];	<span class="comment">// 初始化一个事件保存数组 事件：[订阅的人的需求（callback）]</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 订阅</span></span><br><span class="line">    <span class="function"><span class="title">subscribe</span>(<span class="params">topic, callback</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="built_in">this</span>.topicsList[topic]) &#123;</span><br><span class="line">            <span class="comment">// 如果该事件还没有被初始话</span></span><br><span class="line">            <span class="built_in">this</span>.topicsList[topic] = []; 	<span class="comment">// 初始话</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">this</span>.topicsList[topic].push(callback);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 发布</span></span><br><span class="line">    <span class="function"><span class="title">publish</span>(<span class="params">topic, reward, publisher</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(!<span class="built_in">this</span>.topicsList[topic]) <span class="keyword">return</span> <span class="string">&quot;No subscriber&quot;</span>;</span><br><span class="line">        <span class="built_in">this</span>.topicslist[topic].forEach(<span class="function"><span class="params">callback</span> =&gt;</span> callback(reward, publisher));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 加入我</span></span><br><span class="line">    <span class="function"><span class="title">letSomebodyJoin</span>(<span class="params">...users</span>)</span> &#123;</span><br><span class="line">        users.forEach(<span class="function"><span class="params">user</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;user.nam&#125;</span> 加入了 <span class="subst">$&#123;<span class="built_in">this</span>.name&#125;</span>!`</span>);</span><br><span class="line">            user.brokerList.push(<span class="built_in">this</span>);</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>然后对User类稍作修改</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="title">constructor</span>(<span class="params">name</span>)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">        <span class="built_in">this</span>.brokerList = [];		<span class="comment">// 不需要关注订阅者了，只知道中介是谁就好</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="title">subscribe</span>(<span class="params">topic, callback</span>)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.brokerList.forEach(<span class="function"><span class="params">broker</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;<span class="built_in">this</span>.name&#125;</span>通过<span class="subst">$&#123;broker.name&#125;</span>订阅了<span class="subst">$&#123;topic&#125;</span>`</span>);</span><br><span class="line">            broker.subscribe(topic, callback);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="title">publish</span>(<span class="params">topic, reward</span>)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.brokerList.forEach(<span class="function"><span class="params">broker</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;<span class="built_in">this</span>.name&#125;</span>向<span class="subst">$&#123;broker.name&#125;</span>发布了<span class="subst">$&#123;reward&#125;</span>元的<span class="subst">$&#123;topic&#125;</span>`</span>);</span><br><span class="line">            broker.publish(topic, reward, <span class="built_in">this</span>);</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 输出</span></span><br><span class="line">wang 加入了 broker!</span><br><span class="line">li 加入了 broker!</span><br><span class="line">zhang 加入了 broker!</span><br><span class="line">sun 加入了 broker!</span><br><span class="line">li通过broker订阅了窝窝头</span><br><span class="line">zhang通过broker订阅了窝窝头</span><br><span class="line">sun通过broker订阅了窝窝头</span><br><span class="line">wang向broker发布了<span class="number">35</span>元的窝窝头</span><br><span class="line">li 决定购买 wang 发布的窝窝头！</span><br><span class="line">zhang 决定购买 wang 发布的窝窝头！</span><br><span class="line">sun 觉得太贵了，不决定购买 wang 发布的窝窝头！</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>别觉得难，多敲几次就懂了</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%AE%9E%E4%B9%A0%E5%87%86%E5%A4%87/" rel="tag"># 实习准备</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/11/05/%E5%AE%9E%E4%B9%A0%E5%87%86%E5%A4%87%E7%AC%AC%E4%B8%80%E5%A4%A9/" rel="prev" title="实习准备第一天">
+                  <i class="fa fa-chevron-left"></i> 实习准备第一天
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">赵文强</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="//cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -193,7 +193,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -242,6 +242,107 @@
       
 
       
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://curtain-r.github.io/2020/11/06/%E5%AE%9E%E4%B9%A0%E5%87%86%E5%A4%87%E7%AC%AC%E4%BA%8C%E5%A4%A9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="赵文强">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sanguine's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/06/%E5%AE%9E%E4%B9%A0%E5%87%86%E5%A4%87%E7%AC%AC%E4%BA%8C%E5%A4%A9/" class="post-title-link" itemprop="url">实习准备第二天</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-11-06 22:12:47 / 修改时间：23:33:43" itemprop="dateCreated datePublished" datetime="2020-11-06T22:12:47+08:00">2020-11-06</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="观察者模式和发布订阅"><a href="#观察者模式和发布订阅" class="headerlink" title="观察者模式和发布订阅"></a>观察者模式和发布订阅</h1><blockquote>
+<p>在这之前，我一直以为他们是相同的，先在我才知道他们的区别在哪了</p>
+</blockquote>
+<h3 id="观察者模式"><a href="#观察者模式" class="headerlink" title="观察者模式"></a>观察者模式</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="title">constructor</span>(<span class="params">name</span>)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">        <span class="built_in">this</span>.subscriberList = [];  	<span class="comment">// 订阅者存在这里</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 我可以发布消息</span></span><br><span class="line">    <span class="function"><span class="title">publish</span>(<span class="params">reward</span>)</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;<span class="built_in">this</span>.name&#125;</span> 发布了一个 <span class="subst">$&#123;reward&#125;</span> 元的宝贝！`</span>);</span><br><span class="line">        <span class="built_in">this</span>.subscriberList.forEach(<span class="function"><span class="params">callback</span> =&gt;</span> callback(reward));	<span class="comment">// 逐个通知</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 我可以去订阅别人</span></span><br><span class="line">    <span class="function"><span class="title">subscribe</span>(<span class="params">subject, callback</span>)</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;<span class="built_in">this</span>.name&#125;</span> 订阅了 <span class="subst">$&#123;subject.name&#125;</span>!`</span>);</span><br><span class="line">        subject.subscriberList.push(callback);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">et wang = <span class="keyword">new</span> User(<span class="string">&#x27;wang&#x27;</span>);</span><br><span class="line"><span class="keyword">let</span> li = <span class="keyword">new</span> User(<span class="string">&#x27;li&#x27;</span>);</span><br><span class="line"><span class="keyword">let</span> zhang = <span class="keyword">new</span> User(<span class="string">&#x27;zhang&#x27;</span>);</span><br><span class="line"><span class="keyword">let</span> sun = <span class="keyword">new</span> User(<span class="string">&#x27;sun&#x27;</span>);</span><br><span class="line"></span><br><span class="line">li.subscribe(wang, <span class="function"><span class="params">rewards</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`li <span class="subst">$&#123;rewards &gt; <span class="number">100</span> ? <span class="string">&#x27;觉得太贵了，不&#x27;</span> : <span class="string">&quot;&quot;</span>&#125;</span>决定购买这件物品！`</span>);</span><br><span class="line">&#125;)</span><br><span class="line">zhang.subscribe(wang, <span class="function"><span class="params">rewards</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`zhang <span class="subst">$&#123;rewards &gt; <span class="number">50</span> ? <span class="string">&#x27;觉得太贵了，不&#x27;</span> : <span class="string">&quot;&quot;</span>&#125;</span>决定购买这件物品！`</span>);</span><br><span class="line">&#125;)</span><br><span class="line">sun.subscribe(wang, <span class="function"><span class="params">rewards</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`sun <span class="subst">$&#123;rewards &gt; <span class="number">25</span> ? <span class="string">&#x27;觉得太贵了，不&#x27;</span> : <span class="string">&quot;&quot;</span>&#125;</span>决定购买这件物品！`</span>);</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">wang.publish(<span class="number">75</span>);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 输出</span></span><br><span class="line">li 订阅了 wang!</span><br><span class="line">zhang 订阅了 wang!</span><br><span class="line">sun 订阅了 wang!</span><br><span class="line">wang 发布了一个 <span class="number">75</span> 元的宝贝！</span><br><span class="line">li 决定购买这件物品！</span><br><span class="line">zhang 觉得太贵了，不决定购买这件物品！</span><br><span class="line">sun 觉得太贵了，不决定购买这件物品！</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="观察者模式的优缺点"><a href="#观察者模式的优缺点" class="headerlink" title="观察者模式的优缺点"></a>观察者模式的优缺点</h3><ol>
+<li><p>具体主题和具体观察者是 <strong>松耦合</strong> 关系。由于主题接口仅仅依赖于观察者接口，因此具体主题只是知道它的观察者是实现观察者接口的某个类的实例，但不需要知道具体是哪个类。同样，由于观察者仅仅依赖于主题接口，因此具体观察者只是知道它依赖的主题是实现主题接口的某个类的实例，但不需要知道具体是哪个类。</p>
+</li>
+<li><p>观察者模式满足 <strong>“开-闭原则”</strong>。主题接口仅仅依赖于观察者接口，这样，就可以让创建具体主题的类也仅仅是依赖于观察者接口，因此，如果增加新的实现观察者接口的类，不必修改创建具体主题的类的代码。。同样，创建具体观察者的类仅仅依赖于主题接口，如果增加新的实现主题接口的类，也不必修改创建具体观察者类的代码。</p>
+</li>
+</ol>
+<ol>
+<li><p>如果一个被观察者对象有很多的直接和间接的观察者的话，将所有的观察者 <strong>都通知到会花费很多时间</strong>。</p>
+</li>
+<li><p>如果在观察者和观察目标之间有循环依赖的话，观察目标 <strong>会触发它们之间进行循环调用</strong>，可能导致系统崩溃。</p>
+</li>
+<li><p>观察者模式没有相应的机制让观察者知道所观察的目标对象是怎么发生变化的，而仅仅只是知道观察目标发生了变化。</p>
+</li>
+</ol>
+<h2 id="发布订阅"><a href="#发布订阅" class="headerlink" title="发布订阅"></a>发布订阅</h2><p><strong>我们需要一个中间者（Broker）来管理发布和订阅这些事情，发布者不需要知道消息具体发布给谁，订阅者不需要知道订阅的是谁</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Broker</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="title">constructor</span>(<span class="params">name</span>)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">        <span class="built_in">this</span>.topicsList = [];	<span class="comment">// 初始化一个事件保存数组 事件：[订阅的人的需求（callback）]</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 订阅</span></span><br><span class="line">    <span class="function"><span class="title">subscribe</span>(<span class="params">topic, callback</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="built_in">this</span>.topicsList[topic]) &#123;</span><br><span class="line">            <span class="comment">// 如果该事件还没有被初始话</span></span><br><span class="line">            <span class="built_in">this</span>.topicsList[topic] = []; 	<span class="comment">// 初始话</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">this</span>.topicsList[topic].push(callback);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 发布</span></span><br><span class="line">    <span class="function"><span class="title">publish</span>(<span class="params">topic, reward, publisher</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(!<span class="built_in">this</span>.topicsList[topic]) <span class="keyword">return</span> <span class="string">&quot;No subscriber&quot;</span>;</span><br><span class="line">        <span class="built_in">this</span>.topicslist[topic].forEach(<span class="function"><span class="params">callback</span> =&gt;</span> callback(reward, publisher));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 加入我</span></span><br><span class="line">    <span class="function"><span class="title">letSomebodyJoin</span>(<span class="params">...users</span>)</span> &#123;</span><br><span class="line">        users.forEach(<span class="function"><span class="params">user</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;user.nam&#125;</span> 加入了 <span class="subst">$&#123;<span class="built_in">this</span>.name&#125;</span>!`</span>);</span><br><span class="line">            user.brokerList.push(<span class="built_in">this</span>);</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>然后对User类稍作修改</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="title">constructor</span>(<span class="params">name</span>)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">        <span class="built_in">this</span>.brokerList = [];		<span class="comment">// 不需要关注订阅者了，只知道中介是谁就好</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="title">subscribe</span>(<span class="params">topic, callback</span>)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.brokerList.forEach(<span class="function"><span class="params">broker</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;<span class="built_in">this</span>.name&#125;</span>通过<span class="subst">$&#123;broker.name&#125;</span>订阅了<span class="subst">$&#123;topic&#125;</span>`</span>);</span><br><span class="line">            broker.subscribe(topic, callback);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="title">publish</span>(<span class="params">topic, reward</span>)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.brokerList.forEach(<span class="function"><span class="params">broker</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;<span class="built_in">this</span>.name&#125;</span>向<span class="subst">$&#123;broker.name&#125;</span>发布了<span class="subst">$&#123;reward&#125;</span>元的<span class="subst">$&#123;topic&#125;</span>`</span>);</span><br><span class="line">            broker.publish(topic, reward, <span class="built_in">this</span>);</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 输出</span></span><br><span class="line">wang 加入了 broker!</span><br><span class="line">li 加入了 broker!</span><br><span class="line">zhang 加入了 broker!</span><br><span class="line">sun 加入了 broker!</span><br><span class="line">li通过broker订阅了窝窝头</span><br><span class="line">zhang通过broker订阅了窝窝头</span><br><span class="line">sun通过broker订阅了窝窝头</span><br><span class="line">wang向broker发布了<span class="number">35</span>元的窝窝头</span><br><span class="line">li 决定购买 wang 发布的窝窝头！</span><br><span class="line">zhang 决定购买 wang 发布的窝窝头！</span><br><span class="line">sun 觉得太贵了，不决定购买 wang 发布的窝窝头！</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>别觉得难，多敲几次就懂了</p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
     
 
 
