@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"curtain-r.github.io","root":"/","scheme":"Pisces","version":"8.0.2","exturl":false,"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+
+  <meta name="description" content="call, apply, bind理解及实现原理 众所周知，call,apply,bind是改变this指向的三种方法，其中call,apply会在使用时将this指向改变后的函数自动调用一次，而bind则是返回一个this指向已改变的函数等待调用  1 对call的理解先看一个栗子12345678function print() &amp;#123;    console.log(this.name);">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面试准备第四天">
+<meta property="og:url" content="https://curtain-r.github.io/2020/11/08/%E9%9D%A2%E8%AF%95%E5%87%86%E5%A4%87%E7%AC%AC%E5%9B%9B%E5%A4%A9/index.html">
+<meta property="og:site_name" content="Sanguine&#39;s Blog">
+<meta property="og:description" content="call, apply, bind理解及实现原理 众所周知，call,apply,bind是改变this指向的三种方法，其中call,apply会在使用时将this指向改变后的函数自动调用一次，而bind则是返回一个this指向已改变的函数等待调用  1 对call的理解先看一个栗子12345678function print() &amp;#123;    console.log(this.name);">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-11-08T12:41:28.000Z">
+<meta property="article:modified_time" content="2020-11-08T15:15:07.918Z">
+<meta property="article:author" content="赵文强">
+<meta property="article:tag" content="面试准备">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://curtain-r.github.io/2020/11/08/%E9%9D%A2%E8%AF%95%E5%87%86%E5%A4%87%E7%AC%AC%E5%9B%9B%E5%A4%A9/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>面试准备第四天 | Sanguine's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Sanguine's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <section class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#call-apply-bind%E7%90%86%E8%A7%A3%E5%8F%8A%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">call, apply, bind理解及实现原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%AF%B9call%E7%9A%84%E7%90%86%E8%A7%A3"><span class="nav-number">1.1.</span> <span class="nav-text">1 对call的理解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%88%E7%9C%8B%E4%B8%80%E4%B8%AA%E6%A0%97%E5%AD%90"><span class="nav-number">1.1.0.1.</span> <span class="nav-text">先看一个栗子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AD%94%E6%A1%88%E6%98%AF%E8%82%AF%E5%AE%9A%E7%9A%84%EF%BC%8C%E6%9C%80%E7%AE%80%E5%8D%95%E7%9A%84%EF%BC%8C%E6%88%91%E6%8A%8A%E5%AE%83%E6%94%BE%E5%88%B0myName%E4%B8%AD%E4%B8%8D%E5%B0%B1%E5%A5%BD%E4%BA%86"><span class="nav-number">1.1.0.2.</span> <span class="nav-text">答案是肯定的，最简单的，我把它放到myName中不就好了</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%82%A3%E5%8F%82%E6%95%B0%E6%80%8E%E4%B9%88%E5%8A%9E%EF%BC%9F%EF%BC%9Fcall%E4%B8%8D%E6%98%AF%E5%BE%88%E8%83%BD%E4%BC%A0%E5%98%9B%EF%BC%9F"><span class="nav-number">1.1.0.3.</span> <span class="nav-text">那参数怎么办？？call不是很能传嘛？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%9F%BA%E4%BA%8E%E4%B8%8A%E8%BF%B0%E6%80%9D%E6%83%B3%EF%BC%8C%E6%88%91%E4%BB%AC%E6%9D%A5%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%8Bcall"><span class="nav-number">1.2.</span> <span class="nav-text">2 基于上述思想，我们来实现一下call</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%AE%9E%E7%8E%B0apply"><span class="nav-number">1.3.</span> <span class="nav-text">3 实现apply</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E5%AE%9E%E7%8E%B0bind"><span class="nav-number">1.4.</span> <span class="nav-text">4 实现bind</span></a></li></ol></li></ol></div>
+        </section>
+        <!--/noindex-->
+
+        <section class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="赵文强"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">赵文强</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/curtain-r" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;curtain-r" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/zwq2428118613@163.com" title="E-Mail → zwq2428118613@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </section>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://curtain-r.github.io/2020/11/08/%E9%9D%A2%E8%AF%95%E5%87%86%E5%A4%87%E7%AC%AC%E5%9B%9B%E5%A4%A9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="赵文强">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sanguine's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          面试准备第四天
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-11-08 20:41:28 / 修改时间：23:15:07" itemprop="dateCreated datePublished" datetime="2020-11-08T20:41:28+08:00">2020-11-08</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="call-apply-bind理解及实现原理"><a href="#call-apply-bind理解及实现原理" class="headerlink" title="call, apply, bind理解及实现原理"></a>call, apply, bind理解及实现原理</h1><blockquote>
+<p>众所周知，<code>call,apply,bind</code>是改变<code>this</code>指向的三种方法，其中<code>call,apply</code>会在使用时将<code>this</code>指向改变后的函数自动调用一次，而<code>bind</code>则是返回一个<code>this</code>指向已改变的函数等待调用</p>
+</blockquote>
+<h2 id="1-对call的理解"><a href="#1-对call的理解" class="headerlink" title="1 对call的理解"></a>1 对call的理解</h2><h4 id="先看一个栗子"><a href="#先看一个栗子" class="headerlink" title="先看一个栗子"></a>先看一个栗子</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">print</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> myName = &#123;</span><br><span class="line">    name: <span class="string">&#x27;Sanguine&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line">print();				<span class="comment">// undefined</span></span><br><span class="line">print.call(myName);		<span class="comment">// Sanguine</span></span><br></pre></td></tr></table></figure>
+
+<p>这是对call最简单的使用，输出结果相信大家都有结果了，那么，我们先来分析一下<code>.call</code>干了什么?</p>
+<p><strong>对，他就是改变了<code>print</code>执行的作用域，那么如果我们换种写法能不能也让它在<code>myName</code>作用域下执行？</strong></p>
+<h4 id="答案是肯定的，最简单的，我把它放到myName中不就好了"><a href="#答案是肯定的，最简单的，我把它放到myName中不就好了" class="headerlink" title="答案是肯定的，最简单的，我把它放到myName中不就好了"></a>答案是肯定的，最简单的，我把它放到<code>myName</code>中不就好了</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> myName = &#123;</span><br><span class="line">    name: <span class="string">&#x27;Sanguine&#x27;</span>,</span><br><span class="line">    print: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">this</span>.name);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">myName.print();		<span class="comment">// Sanguine</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>好熟悉的感觉啊，闭包？是有点想，但并不是，然而我们这样修改的话就和上面输出一样了。是不是很简单？？？</p>
+</blockquote>
+<h4 id="那参数怎么办？？call不是很能传嘛？"><a href="#那参数怎么办？？call不是很能传嘛？" class="headerlink" title="那参数怎么办？？call不是很能传嘛？"></a>那参数怎么办？？<code>call</code>不是很能传嘛？</h4><p>还是上面栗子，不过我们给出伪代码，为了更好理解</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用call</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">print</span>(<span class="params">自身参数<span class="number">1</span>, 自身参数<span class="number">2</span></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 对这些参数做了一系列操作</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> myName = &#123;</span><br><span class="line">    name: <span class="string">&#x27;Sanguine&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line">print.call(myName,call传的参数<span class="number">1</span>，call传的参数<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 修改</span></span><br><span class="line"><span class="keyword">let</span> myName = &#123;</span><br><span class="line">    name: <span class="string">&#x27;Sanguine&#x27;</span>,</span><br><span class="line">    print: <span class="function"><span class="keyword">function</span>(<span class="params">自身参数<span class="number">1</span>，自身参数<span class="number">2</span>，call传的参数<span class="number">1</span>，call传的参数<span class="number">2</span></span>) </span>&#123;</span><br><span class="line">        <span class="comment">// 一系列操作</span></span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">this</span>.name)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">myName.print();</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-基于上述思想，我们来实现一下call"><a href="#2-基于上述思想，我们来实现一下call" class="headerlink" title="2 基于上述思想，我们来实现一下call"></a>2 基于上述思想，我们来实现一下<code>call</code></h2><blockquote>
+<p>思路：把要改变<code>this</code>指向的函数放到目标作用域中执行就好，我们知道call是<code>Function</code>原型上的方法</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Function</span>.prototype.myCall = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 这一步前面没有说到</span></span><br><span class="line">    <span class="comment">// 当call不传参数是，让它指向window或node下的global</span></span><br><span class="line">    <span class="keyword">let</span> [thisArg,...args] = <span class="built_in">arguments</span>;	<span class="comment">// 解构赋值，别说不知道</span></span><br><span class="line">    <span class="keyword">if</span> (!thisArg) &#123;</span><br><span class="line">        thisArg = <span class="keyword">typeof</span> <span class="built_in">window</span> === <span class="string">&#x27;undefined&#x27;</span> ? <span class="built_in">global</span> : <span class="built_in">window</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 把函数放到目标作用域thisArg中去</span></span><br><span class="line">    thisArg.func = <span class="built_in">this</span>;	<span class="comment">// this指的就是目前函数</span></span><br><span class="line">    <span class="keyword">let</span> result = thisArg.func(...args);	<span class="comment">// 执行一遍</span></span><br><span class="line">    <span class="keyword">delete</span> thisArg.func;		<span class="comment">// 为了安全起见，删除自己添进来的函数，反正结果我们已经有了</span></span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 测试</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"><span class="number">1</span>,<span class="number">2</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> args = <span class="built_in">arguments</span>;</span><br><span class="line">    <span class="keyword">let</span> result = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i=<span class="number">0</span>;i&lt;[...args].length;i++) &#123;</span><br><span class="line">        result += [...args][i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.name,result);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> testObj = &#123;</span><br><span class="line">    name: <span class="string">&#x27;Sanguine&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line">test.myCall(testObj,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>);		<span class="comment">// Sanguine 15</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-实现apply"><a href="#3-实现apply" class="headerlink" title="3 实现apply"></a>3 实现apply</h2><blockquote>
+<p><code>apply</code>和<code>call</code>没有本质上的区别，只是传入参数的形式不一样而已</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Function</span>.prototype.myApply = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> [thisArg,args] = <span class="built_in">arguments</span>;		<span class="comment">// 这里变了，不需要收集参数了，因为apply只能传入两个参数</span></span><br><span class="line">    <span class="keyword">if</span> (!thisArg) &#123;</span><br><span class="line">        thisArg = <span class="keyword">typeof</span> <span class="built_in">window</span> === <span class="string">&#x27;undefined&#x27;</span> ? <span class="built_in">global</span> : <span class="built_in">window</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    thisArg.func = <span class="built_in">this</span>;</span><br><span class="line">    <span class="keyword">let</span> result = thisArg.func(...args);</span><br><span class="line">    <span class="keyword">delete</span> thisArg.func;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 测试</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> args = <span class="built_in">arguments</span>;</span><br><span class="line">    <span class="keyword">let</span> result = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i=<span class="number">0</span>;i&lt;[...args].length;i++) &#123;</span><br><span class="line">        result += [...args][i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.name,result);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> testObj = &#123;</span><br><span class="line">    name: <span class="string">&#x27;Sanguine&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line">test.myApply(testObj,[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>没有问题，很OK</p>
+</blockquote>
+<h2 id="4-实现bind"><a href="#4-实现bind" class="headerlink" title="4 实现bind"></a>4 实现bind</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Function</span>.prototype.myBind = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> [thisArg, ...args] = <span class="built_in">arguments</span>;</span><br><span class="line">    <span class="comment">// 将this保存下来，和result形成闭包</span></span><br><span class="line">    <span class="keyword">let</span> self = <span class="built_in">this</span>;</span><br><span class="line">    <span class="comment">// 创建一个寄生类</span></span><br><span class="line">    F = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;;</span><br><span class="line">    result = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">let</span> allArgs = [...args, ...arguments];  <span class="comment">// 合并bind传入的参数，和调用时传入的参数</span></span><br><span class="line">        <span class="keyword">return</span> self.call((<span class="built_in">this</span> <span class="keyword">instanceof</span> F ? <span class="built_in">this</span> : thisArg),...allArgs);</span><br><span class="line">        <span class="comment">// return self.apply((this instanceof F ? this : thisArg),allArgs);</span></span><br><span class="line">        <span class="comment">// 这里主要说明一下，this instanceof F ? this : thisArg</span></span><br><span class="line">        <span class="comment">// 如果调用bind的调用者，是构造函数的实例的时候</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 让寄生类的原型指向bind的原型</span></span><br><span class="line">    F.prototype = self.prototype;</span><br><span class="line">    <span class="comment">// 让result的原型执行F的构造函数</span></span><br><span class="line">    result.prototype = <span class="keyword">new</span> F();</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 测试</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> args = <span class="built_in">arguments</span>;</span><br><span class="line">    <span class="keyword">let</span> result = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i=<span class="number">0</span>;i&lt;[...args].length;i++) &#123;</span><br><span class="line">        result += [...args][i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.name,result);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> testObj = &#123;</span><br><span class="line">    name: <span class="string">&#x27;Sanguine&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> newTest = test.myBind(testObj,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>);</span><br><span class="line">newTest(<span class="number">19</span>);            <span class="comment">// Sanguine 34</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>大OK</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%9D%A2%E8%AF%95%E5%87%86%E5%A4%87/" rel="tag"># 面试准备</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/11/07/%E5%AE%9E%E4%B9%A0%E5%87%86%E5%A4%87%E7%AC%AC%E4%B8%89%E5%A4%A9/" rel="prev" title="实习准备第三天">
+                  <i class="fa fa-chevron-left"></i> 实习准备第三天
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">赵文强</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="//cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

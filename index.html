@@ -193,7 +193,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">7</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -202,7 +202,7 @@
         <span class="site-state-item-name">分类</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">标签</span>
       </div>
   </nav>
@@ -242,6 +242,104 @@
       
 
       
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://curtain-r.github.io/2020/11/08/%E9%9D%A2%E8%AF%95%E5%87%86%E5%A4%87%E7%AC%AC%E5%9B%9B%E5%A4%A9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="赵文强">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sanguine's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/08/%E9%9D%A2%E8%AF%95%E5%87%86%E5%A4%87%E7%AC%AC%E5%9B%9B%E5%A4%A9/" class="post-title-link" itemprop="url">面试准备第四天</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-11-08 20:41:28 / 修改时间：23:15:07" itemprop="dateCreated datePublished" datetime="2020-11-08T20:41:28+08:00">2020-11-08</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="call-apply-bind理解及实现原理"><a href="#call-apply-bind理解及实现原理" class="headerlink" title="call, apply, bind理解及实现原理"></a>call, apply, bind理解及实现原理</h1><blockquote>
+<p>众所周知，<code>call,apply,bind</code>是改变<code>this</code>指向的三种方法，其中<code>call,apply</code>会在使用时将<code>this</code>指向改变后的函数自动调用一次，而<code>bind</code>则是返回一个<code>this</code>指向已改变的函数等待调用</p>
+</blockquote>
+<h2 id="1-对call的理解"><a href="#1-对call的理解" class="headerlink" title="1 对call的理解"></a>1 对call的理解</h2><h4 id="先看一个栗子"><a href="#先看一个栗子" class="headerlink" title="先看一个栗子"></a>先看一个栗子</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">print</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> myName = &#123;</span><br><span class="line">    name: <span class="string">&#x27;Sanguine&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line">print();				<span class="comment">// undefined</span></span><br><span class="line">print.call(myName);		<span class="comment">// Sanguine</span></span><br></pre></td></tr></table></figure>
+
+<p>这是对call最简单的使用，输出结果相信大家都有结果了，那么，我们先来分析一下<code>.call</code>干了什么?</p>
+<p><strong>对，他就是改变了<code>print</code>执行的作用域，那么如果我们换种写法能不能也让它在<code>myName</code>作用域下执行？</strong></p>
+<h4 id="答案是肯定的，最简单的，我把它放到myName中不就好了"><a href="#答案是肯定的，最简单的，我把它放到myName中不就好了" class="headerlink" title="答案是肯定的，最简单的，我把它放到myName中不就好了"></a>答案是肯定的，最简单的，我把它放到<code>myName</code>中不就好了</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> myName = &#123;</span><br><span class="line">    name: <span class="string">&#x27;Sanguine&#x27;</span>,</span><br><span class="line">    print: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">this</span>.name);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">myName.print();		<span class="comment">// Sanguine</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>好熟悉的感觉啊，闭包？是有点想，但并不是，然而我们这样修改的话就和上面输出一样了。是不是很简单？？？</p>
+</blockquote>
+<h4 id="那参数怎么办？？call不是很能传嘛？"><a href="#那参数怎么办？？call不是很能传嘛？" class="headerlink" title="那参数怎么办？？call不是很能传嘛？"></a>那参数怎么办？？<code>call</code>不是很能传嘛？</h4><p>还是上面栗子，不过我们给出伪代码，为了更好理解</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用call</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">print</span>(<span class="params">自身参数<span class="number">1</span>, 自身参数<span class="number">2</span></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 对这些参数做了一系列操作</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> myName = &#123;</span><br><span class="line">    name: <span class="string">&#x27;Sanguine&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line">print.call(myName,call传的参数<span class="number">1</span>，call传的参数<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 修改</span></span><br><span class="line"><span class="keyword">let</span> myName = &#123;</span><br><span class="line">    name: <span class="string">&#x27;Sanguine&#x27;</span>,</span><br><span class="line">    print: <span class="function"><span class="keyword">function</span>(<span class="params">自身参数<span class="number">1</span>，自身参数<span class="number">2</span>，call传的参数<span class="number">1</span>，call传的参数<span class="number">2</span></span>) </span>&#123;</span><br><span class="line">        <span class="comment">// 一系列操作</span></span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">this</span>.name)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">myName.print();</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-基于上述思想，我们来实现一下call"><a href="#2-基于上述思想，我们来实现一下call" class="headerlink" title="2 基于上述思想，我们来实现一下call"></a>2 基于上述思想，我们来实现一下<code>call</code></h2><blockquote>
+<p>思路：把要改变<code>this</code>指向的函数放到目标作用域中执行就好，我们知道call是<code>Function</code>原型上的方法</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Function</span>.prototype.myCall = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 这一步前面没有说到</span></span><br><span class="line">    <span class="comment">// 当call不传参数是，让它指向window或node下的global</span></span><br><span class="line">    <span class="keyword">let</span> [thisArg,...args] = <span class="built_in">arguments</span>;	<span class="comment">// 解构赋值，别说不知道</span></span><br><span class="line">    <span class="keyword">if</span> (!thisArg) &#123;</span><br><span class="line">        thisArg = <span class="keyword">typeof</span> <span class="built_in">window</span> === <span class="string">&#x27;undefined&#x27;</span> ? <span class="built_in">global</span> : <span class="built_in">window</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 把函数放到目标作用域thisArg中去</span></span><br><span class="line">    thisArg.func = <span class="built_in">this</span>;	<span class="comment">// this指的就是目前函数</span></span><br><span class="line">    <span class="keyword">let</span> result = thisArg.func(...args);	<span class="comment">// 执行一遍</span></span><br><span class="line">    <span class="keyword">delete</span> thisArg.func;		<span class="comment">// 为了安全起见，删除自己添进来的函数，反正结果我们已经有了</span></span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 测试</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"><span class="number">1</span>,<span class="number">2</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> args = <span class="built_in">arguments</span>;</span><br><span class="line">    <span class="keyword">let</span> result = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i=<span class="number">0</span>;i&lt;[...args].length;i++) &#123;</span><br><span class="line">        result += [...args][i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.name,result);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> testObj = &#123;</span><br><span class="line">    name: <span class="string">&#x27;Sanguine&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line">test.myCall(testObj,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>);		<span class="comment">// Sanguine 15</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-实现apply"><a href="#3-实现apply" class="headerlink" title="3 实现apply"></a>3 实现apply</h2><blockquote>
+<p><code>apply</code>和<code>call</code>没有本质上的区别，只是传入参数的形式不一样而已</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Function</span>.prototype.myApply = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> [thisArg,args] = <span class="built_in">arguments</span>;		<span class="comment">// 这里变了，不需要收集参数了，因为apply只能传入两个参数</span></span><br><span class="line">    <span class="keyword">if</span> (!thisArg) &#123;</span><br><span class="line">        thisArg = <span class="keyword">typeof</span> <span class="built_in">window</span> === <span class="string">&#x27;undefined&#x27;</span> ? <span class="built_in">global</span> : <span class="built_in">window</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    thisArg.func = <span class="built_in">this</span>;</span><br><span class="line">    <span class="keyword">let</span> result = thisArg.func(...args);</span><br><span class="line">    <span class="keyword">delete</span> thisArg.func;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 测试</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> args = <span class="built_in">arguments</span>;</span><br><span class="line">    <span class="keyword">let</span> result = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i=<span class="number">0</span>;i&lt;[...args].length;i++) &#123;</span><br><span class="line">        result += [...args][i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.name,result);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> testObj = &#123;</span><br><span class="line">    name: <span class="string">&#x27;Sanguine&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line">test.myApply(testObj,[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>没有问题，很OK</p>
+</blockquote>
+<h2 id="4-实现bind"><a href="#4-实现bind" class="headerlink" title="4 实现bind"></a>4 实现bind</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Function</span>.prototype.myBind = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> [thisArg, ...args] = <span class="built_in">arguments</span>;</span><br><span class="line">    <span class="comment">// 将this保存下来，和result形成闭包</span></span><br><span class="line">    <span class="keyword">let</span> self = <span class="built_in">this</span>;</span><br><span class="line">    <span class="comment">// 创建一个寄生类</span></span><br><span class="line">    F = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;;</span><br><span class="line">    result = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">let</span> allArgs = [...args, ...arguments];  <span class="comment">// 合并bind传入的参数，和调用时传入的参数</span></span><br><span class="line">        <span class="keyword">return</span> self.call((<span class="built_in">this</span> <span class="keyword">instanceof</span> F ? <span class="built_in">this</span> : thisArg),...allArgs);</span><br><span class="line">        <span class="comment">// return self.apply((this instanceof F ? this : thisArg),allArgs);</span></span><br><span class="line">        <span class="comment">// 这里主要说明一下，this instanceof F ? this : thisArg</span></span><br><span class="line">        <span class="comment">// 如果调用bind的调用者，是构造函数的实例的时候</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 让寄生类的原型指向bind的原型</span></span><br><span class="line">    F.prototype = self.prototype;</span><br><span class="line">    <span class="comment">// 让result的原型执行F的构造函数</span></span><br><span class="line">    result.prototype = <span class="keyword">new</span> F();</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 测试</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> args = <span class="built_in">arguments</span>;</span><br><span class="line">    <span class="keyword">let</span> result = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i=<span class="number">0</span>;i&lt;[...args].length;i++) &#123;</span><br><span class="line">        result += [...args][i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.name,result);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> testObj = &#123;</span><br><span class="line">    name: <span class="string">&#x27;Sanguine&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> newTest = test.myBind(testObj,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>);</span><br><span class="line">newTest(<span class="number">19</span>);            <span class="comment">// Sanguine 34</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>大OK</p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
     
 
 
